@@ -127,5 +127,10 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
+STATICFILES_DIRS = [ 
+    "/Users/caomai/dev/Courses/bew1.2/makewiki_hw/makewiki/makewiki/static/css/style.css",
+    # "os.path.join(BASE_DIR, 'static')", 
+]
+
 # wiki app settings
 WIKI_PAGE_TITLE_MAX_LENGTH = 600

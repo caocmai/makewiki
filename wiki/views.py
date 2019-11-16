@@ -1,10 +1,12 @@
-from django.shortcuts import render
+# this is invoke by the web, url
+from django.shortcuts import render, get_object_or_404
 from wiki.models import Page
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
+from django.views import View
 
 
-class PageList(ListView):
+class PageListView(ListView):
     """
     CHALLENGES:
       1. On GET, display a homepage that shows all Pages in your wiki.
@@ -15,7 +17,13 @@ class PageList(ListView):
 
     def get(self, request):
         """ Returns a list of wiki pages. """
-        pass
+        pages = self.get_queryset().all()
+
+        # OR this would work
+        # pages = self.model.objects.all()
+        context = {"list_of_pages": pages}
+        print(context)
+        return render(request, "wiki/list.html", context)
 
 
 class PageDetailView(DetailView):
@@ -39,7 +47,23 @@ class PageDetailView(DetailView):
 
     def get(self, request, slug):
         """ Returns a specific of wiki page by slug. """
-        pass
+        # detail = get_object_or_404(self.model, pk=item_id)
+        detail = self.get_queryset().get(slug__iexact=slug)
+
+        # or you could use this too
+        # detail = Page.objects.get(slug=slug)
+
+        return render(request, "wiki/page.html", {"detail": detail})
 
     def post(self, request, slug):
-        pass
+      pass
+
+class HiWorldView(View):
+  def get(self, request):
+    # context = {"passed_id": item_id}
+    return render(request, "base.html", {"context": "hello"})
+
+
+# def detail(request, item_id):
+#   print(item_id)
+#   return render(request, "wiki/base.html", {"passed_id": item_id})
